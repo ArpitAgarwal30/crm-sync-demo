@@ -1,0 +1,74 @@
+[
+  {
+    "id": "A-1001",
+    "first_name": "Priya",
+    "last_name": "Raman",
+    "email_address": "priya.raman@northfield-logistics.example",
+    "phone": "+44 20 7946 0101",
+    "company": "Northfield Logistics",
+    "lifecycle": "customer"
+  },
+  {
+    "id": "A-1002",
+    "first_name": "Daniel",
+    "last_name": "Okafor",
+    "email_address": "daniel@brightwater-health.example",
+    "phone": "(555) 010-2048",
+    "company": "Brightwater Health",
+    "lifecycle": "customer"
+  },
+  {
+    "id": "A-1003",
+    "first_name": "Lena",
+    "last_name": "Hoffmann",
+    "email_address": "lena.hoffmann@quarry-analytics.example",
+    "phone": null,
+    "company": "Quarry Analytics",
+    "lifecycle": "lead"
+  },
+  {
+    "id": "A-1004",
+    "first_name": "Tomas",
+    "last_name": "Silva",
+    "email_address": "  T.Silva@Harbor-Freight-Co.example ",
+    "phone": "555-010-1969",
+    "company": "Harbor Freight Co",
+    "lifecycle": "customer"
+  },
+  {
+    "id": "A-1005",
+    "first_name": "Hannah",
+    "last_name": "Weber",
+    "email_address": "hannah.weber@alpine-retail.example",
+    "phone": null,
+    "company": "Alpine Retail Group",
+    "lifecycle": "customer"
+  },
+  {
+    "id": "A-1006",
+    "first_name": "Leo",
+    "last_name": "Martin",
+    "email_address": "leo.martin-at-summit-labs.example",
+    "phone": null,
+    "company": "Summit Labs",
+    "lifecycle": "lead"
+  },
+  {
+    "id": "A-1007",
+    "first_name": "Mary Ann",
+    "last_name": "Castillo",
+    "email_address": "maryann@castillo-design.example",
+    "phone": null,
+    "company": "Castillo Design",
+    "lifecycle": "lead"
+  },
+  {
+    "id": "A-1008",
+    "first_name": "Sam",
+    "last_name": "Patel",
+    "email_address": "sam.patel@greenline-energy.example",
+    "phone": null,
+    "company": "Greenline Energy",
+    "lifecycle": "partner"
+  }
+]

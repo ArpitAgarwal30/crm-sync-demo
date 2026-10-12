@@ -1,0 +1,3 @@
+[*.cs]
+# Test names read as sentences (Replaying_an_old_plan_does_not_create_duplicates).
+dotnet_diagnostic.CA1707.severity = none

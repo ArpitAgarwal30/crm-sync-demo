@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Pure sync engine: no file, network or console access, so all of it is unit-testable. -->
+
+</Project>
