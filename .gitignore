@@ -483,3 +483,6 @@ $RECYCLE.BIN/
 
 # CRM sync demo: working copy of the mock CRMs and sync history (recreated by 'crmsync reset')
 demo/.work/
+
+# CRM sync API: local SQLite database (recreated and seeded on startup)
+App_Data/

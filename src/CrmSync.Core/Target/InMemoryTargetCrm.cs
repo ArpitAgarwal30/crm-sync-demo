@@ -15,7 +15,7 @@ public sealed class InMemoryTargetCrm(IEnumerable<BetaContact> seed, TimeProvide
     public BetaContact Create(BetaFields fields, string externalRef)
     {
         var id = _contacts.Count == 0 ? 5001 : _contacts.Keys.Max() + 1;
-        return _contacts[id] = Build(id, fields, externalRef);
+        return _contacts[id] = BetaContact.From(id, fields, externalRef, clock.GetUtcNow());
     }
 
     public BetaContact Update(int id, BetaFields fields, string? externalRef)
@@ -25,20 +25,8 @@ public sealed class InMemoryTargetCrm(IEnumerable<BetaContact> seed, TimeProvide
             throw new KeyNotFoundException($"Beta contact {id} does not exist.");
         }
 
-        return _contacts[id] = Build(id, fields, externalRef);
+        return _contacts[id] = BetaContact.From(id, fields, externalRef, clock.GetUtcNow());
     }
 
     public void Delete(int id) => _contacts.Remove(id);
-
-    private BetaContact Build(int id, BetaFields fields, string? externalRef) => new()
-    {
-        Id = id,
-        ExternalRef = externalRef,
-        FullName = fields.FullName,
-        Email = fields.Email,
-        PhoneNumber = fields.PhoneNumber,
-        Account = fields.Account,
-        Stage = fields.Stage,
-        ModifiedAt = clock.GetUtcNow(),
-    };
 }

@@ -21,6 +21,19 @@ public sealed record BetaContact
 
     /// <summary>Set by the CRM on every write, like a real CRM's last-modified timestamp.</summary>
     public required DateTimeOffset ModifiedAt { get; init; }
+
+    /// <summary>How every target CRM implementation builds a written record.</summary>
+    public static BetaContact From(int id, BetaFields fields, string? externalRef, DateTimeOffset modifiedAt) => new()
+    {
+        Id = id,
+        ExternalRef = externalRef,
+        FullName = fields.FullName,
+        Email = fields.Email,
+        PhoneNumber = fields.PhoneNumber,
+        Account = fields.Account,
+        Stage = fields.Stage,
+        ModifiedAt = modifiedAt,
+    };
 }
 
 /// <summary>The fields the sync owns. Ids, links and timestamps are managed separately.</summary>

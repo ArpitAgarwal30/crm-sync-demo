@@ -1,9 +1,11 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/CrmSync.Api/CrmSync.Api.csproj" />
     <Project Path="src/CrmSync.Cli/CrmSync.Cli.csproj" />
     <Project Path="src/CrmSync.Core/CrmSync.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/CrmSync.Api.Tests/CrmSync.Api.Tests.csproj" />
     <Project Path="tests/CrmSync.Core.Tests/CrmSync.Core.Tests.csproj" />
   </Folder>
 </Solution>

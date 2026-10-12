@@ -34,20 +34,50 @@ Every applied run is written to an append-only audit log.
 - **Optimistic concurrency.** A plan records each target's version. If the record changes between planning and applying, that change is skipped as stale, so replaying an old plan can't duplicate or clobber anything.
 - **No deletes.** Target contacts with no source match are reported as unmanaged and left alone. Rollback only removes contacts the sync itself created.
 - **Safe rollback.** Rollback refuses to restore any contact edited after the run, and reports it instead.
-- **Pure core.** `CrmSync.Core` has no file, network or console access; the CLI owns all I/O. That keeps the logic fully unit-testable with a controllable clock.
+- **Pure core.** `CrmSync.Core` has no file, network or console access; the CLI and API own all I/O. That keeps the logic fully unit-testable with a controllable clock.
+- **All-or-nothing writes (API).** Applying or rolling back runs inside one SQLite transaction: the target CRM, sync state, run record and audit entries are saved together or not at all.
+- **Plans are stored.** `POST /api/plans` saves the dry run; `POST /api/plans/{id}/apply` applies exactly that plan, once. Anything edited in between is caught by the stale check instead of being overwritten.
+- **Lossless timestamps.** Conflict and rollback checks compare timestamps exactly, so the database stores them as UTC ticks (EF Core's default SQLite conversion would lose precision and break those checks).
 
 ## Project layout
 
 ```
-src/CrmSync.Core/    Sync engine: mapping, matching, planning, applying, rollback, audit
-src/CrmSync.Cli/     Command-line app and file storage for the demo
-tests/               xUnit tests for the engine
-demo/                Mock source data, target seed data and sync-state seed
+src/CrmSync.Core/        Sync engine: mapping, matching, planning, applying, rollback, audit
+src/CrmSync.Api/         ASP.NET Core API, EF Core + SQLite storage
+src/CrmSync.Cli/         Command-line app with file storage
+tests/CrmSync.Core.Tests xUnit unit tests for the engine
+tests/CrmSync.Api.Tests  Integration tests over HTTP against a throwaway SQLite database
+demo/                    Mock source data, target seed data and sync-state seed (used by API and CLI)
 ```
 
 ## Run it
 
 Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download).
+
+### API
+
+```bash
+dotnet run --project src/CrmSync.Api
+```
+
+It listens on `http://localhost:5120`, creates and seeds `src/CrmSync.Api/App_Data/crmsync.db` on first start, and serves its OpenAPI document at `/openapi/v1.json` in Development.
+
+| Method | Path | What it does |
+|---|---|---|
+| `GET` | `/api/source/contacts`, `/api/target/contacts` | Read either mock CRM |
+| `PUT` | `/api/target/contacts/{id}` | Edit a contact directly in Beta, as one of its users would (use it to create a conflict) |
+| `POST` | `/api/plans` | Create a dry-run plan; nothing changes |
+| `GET` | `/api/plans/{planId}` | Read a stored plan |
+| `POST` | `/api/plans/{planId}/apply?sourceWins=false` | Apply a plan once; `409` if it was already applied |
+| `GET` | `/api/runs`, `/api/runs/{runId}` | Applied runs with before/after images |
+| `POST` | `/api/runs/{runId}/rollback` | Undo a run; `409` if already rolled back |
+| `GET` | `/api/audit?take=100` | Audit log, newest first |
+| `POST` | `/api/demo/reset` | Restore both mock CRMs and clear history |
+| `GET` | `/health` | Health check |
+
+Errors use standard problem details (`application/problem+json`).
+
+### CLI
 
 ```bash
 dotnet test
@@ -64,8 +94,12 @@ Run commands from the repository root. `apply --source-wins` overwrites conflict
 ## Status and next steps
 
 - [x] **D1:** sync engine, tests and CLI
-- [ ] **D2:** ASP.NET Core API
+- [x] **D2:** ASP.NET Core API with transactional SQLite storage
 - [ ] **D3:** React/TypeScript UI
 - [ ] **D4:** deployment and write-up
 
-Known limitations of D1: file storage is not transactional across files (an interrupted apply could save the target but not the run record); the API step will move storage to a database with transactions.
+Known limitations:
+
+- The CLI keeps its simpler file storage, which is not transactional across files; use the API for all-or-nothing writes.
+- The API has no authentication. It is a local demo; anything deployed publicly would need it, or at least a read-only mode.
+- The database schema is created with `EnsureCreated` rather than migrations, which is fine for disposable demo data but not for a real system.
