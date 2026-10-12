@@ -44,6 +44,7 @@ Every applied run is written to an append-only audit log.
 ```
 src/CrmSync.Core/        Sync engine: mapping, matching, planning, applying, rollback, audit
 src/CrmSync.Api/         ASP.NET Core API, EF Core + SQLite storage
+web/                     React + TypeScript UI (Vite, Tailwind CSS)
 src/CrmSync.Cli/         Command-line app with file storage
 tests/CrmSync.Core.Tests xUnit unit tests for the engine
 tests/CrmSync.Api.Tests  Integration tests over HTTP against a throwaway SQLite database
@@ -77,6 +78,20 @@ It listens on `http://localhost:5120`, creates and seeds `src/CrmSync.Api/App_Da
 
 Errors use standard problem details (`application/problem+json`).
 
+### UI
+
+With the API running, in another terminal (requires Node 24):
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Open `http://localhost:5174`. Vite forwards `/api` to the API on port 5120, so there is no CORS setup. The page shows both CRMs side by side, the dry run with field-by-field changes, applied runs with rollback, and the audit log. Use **Edit** on a Beta contact, then create a new dry run, to see a conflict.
+
+UI checks: `npm run typecheck`, `npm run lint`, `npm test` (Vitest + Testing Library), `npm run build`.
+
 ### CLI
 
 ```bash
@@ -95,7 +110,7 @@ Run commands from the repository root. `apply --source-wins` overwrites conflict
 
 - [x] **D1:** sync engine, tests and CLI
 - [x] **D2:** ASP.NET Core API with transactional SQLite storage
-- [ ] **D3:** React/TypeScript UI
+- [x] **D3:** React/TypeScript UI
 - [ ] **D4:** deployment and write-up
 
 Known limitations:

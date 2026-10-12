@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -28,9 +29,10 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         }
     }
 
-    private static string RepositoryRoot()
+    // Starts from this source file's location (fixed at compile time), so it works whatever the build output folder is.
+    private static string RepositoryRoot([CallerFilePath] string sourceFile = "")
     {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        var directory = new DirectoryInfo(Path.GetDirectoryName(sourceFile)!);
         while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "CrmSync.slnx")))
         {
             directory = directory.Parent;

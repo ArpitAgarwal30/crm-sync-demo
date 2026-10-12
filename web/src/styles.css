@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* Light by default, dark when the OS prefers it. Same palette as the portfolio. */
+:root {
+  color-scheme: light;
+  --bg: #fafaf7;
+  --surface: #ffffff;
+  --surface-2: #f2f2ee;
+  --border: #e4e4de;
+  --text: #14171c;
+  --muted: #5b6270;
+  --accent: #0f766e;
+  --accent-contrast: #ffffff;
+  --create: #0f766e;
+  --update: #1d4ed8;
+  --conflict: #b45309;
+  --invalid: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #0b0f14;
+    --surface: #11161d;
+    --surface-2: #171d26;
+    --border: #232b36;
+    --text: #e8ecf1;
+    --muted: #9aa4b2;
+    --accent: #2dd4bf;
+    --accent-contrast: #04201d;
+    --create: #2dd4bf;
+    --update: #60a5fa;
+    --conflict: #fbbf24;
+    --invalid: #f87171;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-create: var(--create);
+  --color-update: var(--update);
+  --color-conflict: var(--conflict);
+  --color-invalid: var(--invalid);
+
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.5);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

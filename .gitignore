@@ -486,3 +486,6 @@ demo/.work/
 
 # CRM sync API: local SQLite database (recreated and seeded on startup)
 App_Data/
+
+# CRM sync UI: production build output
+web/dist/
