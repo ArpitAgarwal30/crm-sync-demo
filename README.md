@@ -111,10 +111,16 @@ Run commands from the repository root. `apply --source-wins` overwrites conflict
 - [x] **D1:** sync engine, tests and CLI
 - [x] **D2:** ASP.NET Core API with transactional SQLite storage
 - [x] **D3:** React/TypeScript UI
-- [ ] **D4:** deployment and write-up
+- [ ] Case study on [the author's portfolio](https://arpitagarwal.vercel.app)
+
+There is no hosted copy; run it locally as described above.
 
 Known limitations:
 
 - The CLI keeps its simpler file storage, which is not transactional across files; use the API for all-or-nothing writes.
 - The API has no authentication. It is a local demo; anything deployed publicly would need it, or at least a read-only mode.
 - The database schema is created with `EnsureCreated` rather than migrations, which is fine for disposable demo data but not for a real system.
+
+## License
+
+[MIT](LICENSE)
